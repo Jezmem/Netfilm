@@ -1,12 +1,12 @@
-Importer la base de donnée : 
-    Ouvrir le dossier documentation,
-        Ouvrirle fichier documentation.docx
-        Copier coller le script SCQL de la base de donnée
-        Copier coller le script SCQL du jeux d'essai
+Importer la base de données : 
+    ouvrir le dossier documentation;
+        Ouvrirle fichier documentation Docs
+        Copier coller le script SCQL de la base de données
+        Copier coller le script SCQL du jeu d'essai
 
-Relier le projetà la base de donnée:
-    Modifier le fichier parameters-exemple.php en fonction de vos besoin 
+Relier le projet à la base de données:
+    modifier le fichier parameters-exemple.php en fonction de vos besoins 
 
-Uploader le fichier composer.json
+Uploader le fichier composé Json
     composer install
-    composer update 
+    composer update
