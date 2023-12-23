@@ -1,0 +1,155 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url(assets/NetflixBackground.webp);
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: 'Inter', sans-serif;
+}
+
+.brand {
+    color: #D80000;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 250%;
+    margin-left: 5%;
+    margin-top: 2%;
+    text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+}
+
+.form .title {
+    color: white;
+    font-size: 250%;
+}
+
+.form {
+    background-color: black;
+    padding: 2% 5%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 25%;
+}
+
+.form .id {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 5%;
+    background-color: #D80000;
+    color: white;
+    font-size: 110%;
+    border: #D80000;
+    border-radius: 3px;
+    margin-top: 20%;
+}
+
+.form .id:hover {
+    background-color: #505050;
+    cursor: pointer;
+}
+
+.id-container {
+    color: #A9A9A9;
+    background-color: #505050;
+    padding: 1% 4%;
+    border-radius: 3px;
+}
+
+.id-container input {
+    background-color: #505050;
+    border: #505050;
+    width: 100%;
+    color: white;
+}
+
+.password-container {
+    background-color: #505050;
+    color: #A9A9A9;
+    border-radius: 3px;
+    padding: 1% 4%;
+    margin-top: 5%;
+}
+
+.password-container input {
+    background-color: #505050;
+    border: #505050;
+    width: 70%;
+    color: white;
+}
+
+.password-element {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#toggleButton:hover {
+    color: white;
+    cursor: pointer;
+}
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.helpbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.checkbox {
+    display: flex;
+    justify-content: flex-start;
+    color: #A9A9A9;
+    width: 100%;
+}
+
+.checkbox input {
+    width: 1.35em;
+    background-color: red;
+    cursor: pointer;
+    margin-right: 3%;
+}
+
+.toggleButton {
+    color: green;
+}
+
+.help {
+    width: 100%;
+    text-align: end;
+    text-decoration: none;
+    color: #A9A9A9;
+}
+
+.help:hover {
+    color: #D80000;
+}
+
+.firstVisit {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: #A9A9A9;
+}
+
+.firstVisit .signIn {
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    margin-left: 2%;
+}
+
+.signIn:hover {
+    color: #D80000;
+}
+
+.signIn:visited {
+    text-decoration: none;
+    margin-left: 2%;
+}

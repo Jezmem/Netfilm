@@ -1,0 +1,6 @@
+{
+    "require": {
+        "composer/composer": "^2.6",
+        "nette/robot-loader": "^4.0"
+    }
+}

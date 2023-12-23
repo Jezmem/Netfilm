@@ -1,0 +1,381 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    font-family: 'Inter', sans-serif;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    text-align: center;
+    color: white;
+}
+
+.leave {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 5%;
+    color: white;
+}
+
+.leave a {
+    color: white;
+    margin-right: 6%;
+}
+
+.leave i {
+    padding-right: 10%;
+    font-size: 150%;
+}
+
+.leave i:hover {
+    color: #505050;
+    cursor: pointer;
+}
+
+.leave h1 {
+    color: #D80000;
+    font-size: 200%;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.searchbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.searchbar i {
+    font-size: 150%;
+    margin-right: 8%;
+}
+
+.searchbar i:hover {
+    color: #505050;
+    cursor: pointer;
+}
+
+.searchbar input {
+    background-color: black;
+    border: solid 1px #7DA7E5;
+    padding: 5% 50% 5% 5%;
+    color: #C9C9C9;
+    border-radius: 3px;
+
+}
+
+.modification {
+    display: flex;
+    align-items: center;
+    margin-right: 6%;
+}
+
+.modification .edit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modification .open-addModal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 40%;
+}
+
+.modification .open-addModal i:hover {
+    color: #505050;
+}
+
+.modification .edit i:hover {
+    color: #505050;
+}
+
+.modification i {
+    font-size: 150%;
+    cursor: pointer;
+    padding-right: 15%;
+    color: white;
+}
+
+.modification a {
+    text-decoration: none;
+    font-size: 150%;
+    color: white;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    margin-left: 3%;
+    margin-top: 2%;
+}
+
+.user h2 {
+    color: white;
+    padding-left: 1%;
+}
+
+.user img {
+    width: 4%;
+    border-radius: 5px;
+}
+
+.movies-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.movie {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 2% 5%;
+    width: 18%;
+}
+
+.movie-image {
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.movie-image i {
+    font-size: 250%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 2%;
+}
+
+.movie p {
+    color: white;
+}
+
+/* style de la modale de visualisation d'un film*/
+.modale {
+    width: 60%;
+    background-color: #505050;
+    border: #505050;
+}
+
+.modale i {
+    color: white;
+}
+
+.modale i:hover {
+    color: #D80000;
+    cursor: pointer;
+}
+
+.modal-image {
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 50%;
+}
+
+.type-movie {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 150%;
+    margin: 0% 3%;
+}
+
+.title {
+    color: white;
+    font-size: 250%;
+    padding: 40% 0% 3% 3%;
+}
+
+.update {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 150%;
+}
+
+.update:hover {
+    color: #D80000;
+    cursor: pointer;
+}
+
+.update i {
+    padding: 1%;
+}
+
+/* style de la modale d'ajout d'un film */
+.add-modal {
+    width: 60%;
+    background-color: #505050;
+}
+
+.add-movie-image {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #A9A9A9;
+}
+
+.add-title {
+    color: white;
+    font-size: 200%;
+    background-color: #A9A9A9;
+    border: solid 3px #7DA7E5;
+    margin: 15% 20% 5% 5%;
+    border-radius: 2px;
+}
+
+.add-movie-image i {
+    font-size: 250%;
+    display: flex;
+    padding: 2%;
+    color: white;
+}
+
+.add-movie-image #add-image {
+    margin-top: 15%;
+}
+
+.add-image-file {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-movie-image #close-addModal {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#close-addModal:hover {
+    color: #D80000;
+    cursor: pointer;
+}
+
+.add-type-movie {
+    display: flex;
+    justify-content: space-between;
+    margin: 2% 0% 4% 0%;
+}
+
+.add-type-movie select {
+    color: white;
+    font-size: 100%;
+    background-color: #646464;
+    border: none;
+    padding: 1% 2%;
+    border-radius: 7px;
+}
+
+.chekcbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.checkbox-element {
+    --checkbox-color: #646464;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background-color: var(--checkbox-color);
+    border-radius: 4px;
+}
+
+.checkbox-element:checked {
+    --checkbox-color: #007bff;
+    background-color: var(--checkbox-color);
+}
+
+.checkbox-element:hover {
+    cursor: pointer;
+    border: 2px solid #0056b3;
+}
+
+.add-type-movie input {
+    border: solid 2px #7DA7E5;
+    border-radius: 3px;
+    padding: 1%;
+    background-color: #505050;
+    color: white;
+    font-size: 100%;
+}
+
+.add-synopsis {
+    width: 100%;
+    padding: 8% 1%;
+    border: solid 2px #7DA7E5;
+    border-radius: 3px;
+    background-color: #505050;
+    color: white;
+    font-size: 100%;
+}
+
+.add-realisation input {
+    border: solid 2px #7DA7E5;
+    border-radius: 3px;
+    padding: 1%;
+    background-color: #505050;
+    color: white;
+    font-size: 100%;
+}
+
+.add-realisation p {
+    font-size: 110%;
+    color: white;
+}
+
+.add-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 3% 0% 2%
+}
+
+.add-button button {
+    color: white;
+    background-color: #505050;
+    border: #505050;
+    font-size: 150%;
+}
+
+.add-button button:hover {
+    color: #D80000;
+    cursor: pointer;
+}
+
+.add-picture-file p {
+    font-size: 110%;
+    color: white;
+}
+
+.hidden {
+    display: none;
+}
+
+.delete {
+    display: none;
+}
+
+.delete-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 50%;
+    width: 100%;
+}
+
+.delete-container button {
+    width: 100%;
+    height: 100%;
+}
