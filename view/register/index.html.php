@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="inscription.css">
@@ -8,13 +9,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription</title>
 </head>
+
 <body>
 
     <h1 class="brand">NETFILM</h1>
     <div class="form">
         <div class="form-container">
             <h2 class="title">S'inscrire</h2>
-            <form method="post" action="">
+            <form method="post" action="/register/add">
                 <div class="name">
                     <div id="last-name" class="form-content">
                         <label for="last_name">Nom:</label>

@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use App\Database\UserDatabase;
+use App\Database\MovieDatabase;
+use App\Model\Movie;
 
 class MovieController extends AbstractController
 {
@@ -21,20 +22,20 @@ class MovieController extends AbstractController
     public function getAllMovies()
     {
         // Récupérer tous les films
-        return $this->movieDatabase->getAllMovies();
+        return $this->movieDatabase->findAll();
     }
 
     public function addMovie($title, $producer, $synopsis, $genre, $scriptwriter, $production, $releaseYear, $image, $picture)
     {
         // Ajouter un nouveau film
         $newMovie = new Movie(null, $title, $producer, $synopsis, $genre, $scriptwriter, $production, $releaseYear, $image, $picture);
-        return $this->movieDatabase->addMovie($newMovie);
+        return $this->movieDatabase->add($newMovie);
     }
 
     public function editMovie($id, $title, $producer, $synopsis, $genre, $scriptwriter, $production, $releaseYear, $image, $picture)
     {
         // Modifier un film existant
         $editedMovie = new Movie($id, $title, $producer, $synopsis, $genre, $scriptwriter, $production, $releaseYear, $image, $picture);
-        return $this->movieDatabase->editMovie($editedMovie);
+        return $this->movieDatabase->edit($editedMovie);
     }
 }

@@ -1,15 +1,15 @@
 <script>
     function togglePassword() {
-      var passwordInput = document.getElementById("password");
+        var passwordInput = document.getElementById("password");
 
-      // Change le type de l'input entre "password" et "text"
-      if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-      } else {
-        passwordInput.type = "password";
-      }
+        // Change le type de l'input entre "password" et "text"
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
     }
-  </script>
+</script>
 <script>
     <?php foreach ($allMovie as $element) { ?>
         let openBtn<?= $element['id'] ?> = document.querySelector('#openmodal<?= $element['id'] ?>');
@@ -31,29 +31,29 @@
     let openModal = document.querySelector('.open-addModal');
     let closeModal = document.querySelector('#close-addModal');
 
-    openModal.addEventListener('click', () =>{
+    openModal.addEventListener('click', () => {
         addModal.showModal();
     })
 
-    closeModal.addEventListener('click', () =>{
+    closeModal.addEventListener('click', () => {
         addModal.close();
     })
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         // ... (le script précédent pour le lien "Gérer")
 
         // Récupérer le bouton "Supprimer"
         var deleteButton = document.getElementById('deleteMovies');
 
         // Attacher un gestionnaire d'événement au bouton "Supprimer"
-        deleteButton.addEventListener('click', function () {
+        deleteButton.addEventListener('click', function() {
             // Récupérer toutes les cases à cocher sélectionnées
             var selectedCheckboxes = document.querySelectorAll('.checkbox-element:checked');
 
             // Récupérer les identifiants des films sélectionnés
-            var selectedMovieIds = Array.from(selectedCheckboxes).map(function (checkbox) {
+            var selectedMovieIds = Array.from(selectedCheckboxes).map(function(checkbox) {
                 return checkbox.value;
             });
 
@@ -63,7 +63,7 @@
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', 'delete_movies.php', true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                xhr.onreadystatechange = function () {
+                xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4 && xhr.status === 200) {
                         // Mettez à jour ou réinitialisez votre interface utilisateur si nécessaire
                         console.log(xhr.responseText);
@@ -79,12 +79,12 @@
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         // Récupérer le lien "Gérer"
         var manageLink = document.querySelector('.manage-link');
 
         // Attacher un gestionnaire d'événement au lien "Gérer"
-        manageLink.addEventListener('click', function (event) {
+        manageLink.addEventListener('click', function(event) {
             // Empêcher le comportement par défaut du lien
             event.preventDefault();
 
@@ -92,14 +92,14 @@
             var checkboxes = document.querySelectorAll('.checkbox-element');
 
             // Basculer la classe "hidden" pour afficher ou masquer les cases à cocher
-            checkboxes.forEach(function (checkbox) {
+            checkboxes.forEach(function(checkbox) {
                 checkbox.classList.toggle('hidden');
             });
         });
     });
 </script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         // Récupérer le lien "Gérer"
         var manageLink = document.querySelector('.manage-link');
 
@@ -110,7 +110,7 @@
         var isDeleteButtonVisible = false;
 
         // Attacher un gestionnaire d'événement au lien "Gérer"
-        manageLink.addEventListener('click', function (event) {
+        manageLink.addEventListener('click', function(event) {
             // Empêcher le comportement par défaut du lien
             event.preventDefault();
 

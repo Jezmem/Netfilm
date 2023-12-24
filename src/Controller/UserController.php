@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Database\UserDatabase;
+use App\Model\User;
+
 
 class UserController extends AbstractController
 {
@@ -17,25 +19,10 @@ class UserController extends AbstractController
     {
         return $this->render('connect/index.html.php');
     }
-    
+
     public function getAllUsers()
     {
         // Récupérer tous les utilisateurs
-        return $this->userDatabase->getAllUsers();
+        return $this->userDatabase->findAll();
     }
-
-    public function addUser($lastName, $firstName, $username, $password)
-    {
-        // Ajouter un nouvel utilisateur
-        $newUser = new User(null, $lastName, $firstName, $username, $password);
-        return $this->userDatabase->addUser($newUser);
-    }
-
-    public function editUser($id, $lastName, $firstName, $username, $password)
-    {
-        // Modifier un utilisateur existant
-        $editedUser = new User($id, $lastName, $firstName, $username, $password);
-        return $this->userDatabase->editUser($editedUser);
-    }
-
 }
