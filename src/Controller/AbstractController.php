@@ -4,9 +4,6 @@ namespace App\Controller;
 
 abstract class AbstractController
 {
-    public function __construct()
-    {
-    }
 
     private const TEMPLATE_DIR = __DIR__.'/../../view';
 

@@ -23,7 +23,7 @@
                     echo '<p class="error-message">' . $errorMessage . '</p>';
                 }
                 ?>
-                <form action="/connexion" method="post">
+                <form method="post">
                     <div class="id-container">
                         <p>Nom d'utilisateur</p>
                         <input type="text" id="username" name="username" required>
@@ -46,7 +46,7 @@
                 </div>
                 <div class="firstVisit">
                     <p>Première visite sur NetFilm ?</p>
-                    <a href="/register" class="signIn">Inscrivez-vous</a>
+                    <a href="/php/Netfilm/Netfilm/register/" class="signIn">Inscrivez-vous</a>
                 </div>
             </div>
         </div>

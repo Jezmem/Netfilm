@@ -9,8 +9,8 @@ use App\Controller\{
 
 function registerRoutes(Router $router)
 {
-    $router->addRoute(new Route('/public/', UserController::class, 'index'));
-    $router->addRoute(new Route('/public/dashboard', MovieController::class, 'index'));
-    $router->addRoute(new Route('/public/register', RegisterController::class, 'index'));
-    $router->addRoute(new Route('/public/register/add', RegisterController::class, 'addUser', 'POST'));
+    $router->addRoute(new Route('/php/Netfilm/Netfilm/public/', UserController::class, 'index'));
+    $router->addRoute(new Route('/php/Netfilm/Netfilm/public/dashboard', MovieController::class, 'index'));
+    $router->addRoute(new Route('/php/Netfilm/Netfilm/register/', RegisterController::class, ''));
+    $router->addRoute(new Route('/php/Netfilm/Netfilm/public/register/add', RegisterController::class, 'addUser', 'POST'));
 }

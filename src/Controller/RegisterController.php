@@ -5,12 +5,25 @@ namespace App\Controller;
 use App\Database\UserDatabase;
 use App\Model\User;
 
-final class RegisterController
+
+class RegisterController extends AbstractController
 {
-    public function index()
+    private $userDatabase;
+
+    public function __construct()
     {
-        // Charge la vue pour la page d'inscription
-        include '../views/register/index.html.php';
+        $this->userDatabase = new UserDatabase();
+    }
+
+    public function index(): string
+    {
+        return $this->render('register/index.html.php');
+    }
+
+    public function getAllUsers()
+    {
+        // Récupérer tous les utilisateurs
+        return $this->userDatabase->findAll();
     }
 
     public function addUser()
@@ -28,7 +41,6 @@ final class RegisterController
         UserDatabase::add($user);
 
         // Redirige vers la page de connexion ou une autre page si nécessaire
-        header('Location: /connexion');
         exit;
     }
 }
