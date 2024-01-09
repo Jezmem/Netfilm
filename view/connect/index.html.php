@@ -46,7 +46,7 @@
                 </div>
                 <div class="firstVisit">
                     <p>Première visite sur NetFilm ?</p>
-                    <a href="/php/Netfilm/Netfilm/register/" class="signIn">Inscrivez-vous</a>
+                    <a href="/project/Netfilm/register/" class="signIn">Inscrivez-vous</a>
                 </div>
             </div>
         </div>

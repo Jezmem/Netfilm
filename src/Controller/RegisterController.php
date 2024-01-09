@@ -19,14 +19,12 @@ class RegisterController extends AbstractController
     {
         return $this->render('register/index.html.php');
     }
-
     public function getAllUsers()
     {
         // Récupérer tous les utilisateurs
         return $this->userDatabase->findAll();
     }
-
-    public function addUser()
+    public function add()
     {
         // Récupère les données du formulaire
         $lastName = $_POST['last_name'];
@@ -40,7 +38,8 @@ class RegisterController extends AbstractController
         // Ajoute l'utilisateur à la base de données
         UserDatabase::add($user);
 
-        // Redirige vers la page de connexion ou une autre page si nécessaire
+        // Redirige vers la page de connexion
+        header('Location: /connexion');
         exit;
     }
 }

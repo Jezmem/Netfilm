@@ -1,0 +1,13 @@
+# Active la réécriture d'URL
+RewriteEngine On
+
+# Définit la base de la réécriture d'URL
+RewriteBase /project/Netfilm/
+
+# Réécriture d'URL pour rediriger toutes les requêtes non existantes vers index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+
+# Personnalise la page d'erreur 404
+ErrorDocument 404 /errors/error404.php
