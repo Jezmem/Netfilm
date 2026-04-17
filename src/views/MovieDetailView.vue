@@ -167,7 +167,10 @@ onMounted(loadData)
           <div class="reviews-grid">
             <div v-for="note in movie.user_notes" :key="note.id" class="review-card card">
               <div class="review-header">
-                <div class="review-avatar">{{ note.users?.prenom?.charAt(0) || '?' }}</div>
+                <div class="review-avatar">
+                  <img v-if="note.users?.avatar" :src="note.users.avatar" :alt="note.users.prenom" class="review-avatar-img" />
+                  <span v-else>{{ note.users?.prenom?.charAt(0) || '?' }}</span>
+                </div>
                 <div>
                   <div class="review-author">{{ note.users?.prenom }} {{ note.users?.nom }}</div>
                   <RatingStars :model-value="note.note" :readonly="true" size="sm" />
@@ -232,7 +235,8 @@ onMounted(loadData)
 .reviews-grid { display: grid; gap: 16px; }
 .review-card { padding: 20px; }
 .review-header { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
-.review-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--color-primary); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 16px; flex-shrink: 0; }
+.review-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--color-primary); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 16px; flex-shrink: 0; overflow: hidden; }
+.review-avatar-img { width: 100%; height: 100%; object-fit: cover; }
 .review-author { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
 .review-date { margin-left: auto; font-size: 12px; color: var(--color-text-muted); }
 .review-comment { font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
