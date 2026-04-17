@@ -14,10 +14,16 @@ export const registerSchema = Joi.object({
     'string.email': 'Email invalide',
     'any.required': 'L\'email est requis'
   }),
-  mot_de_passe: Joi.string().min(8).required().messages({
-    'string.min': 'Le mot de passe doit contenir au moins 8 caractères',
-    'any.required': 'Le mot de passe est requis'
-  })
+  mot_de_passe: Joi.string()
+    .min(8)
+    .pattern(/[A-Z]/, 'uppercase')
+    .pattern(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/, 'special')
+    .required()
+    .messages({
+      'string.min': 'Le mot de passe doit contenir au moins 8 caractères',
+      'string.pattern.name': 'Le mot de passe doit contenir au moins une majuscule et un caractère spécial',
+      'any.required': 'Le mot de passe est requis'
+    })
 })
 
 export const loginSchema = Joi.object({
