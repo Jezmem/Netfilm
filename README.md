@@ -139,6 +139,7 @@ netfilm/
 | `favorites` | Favoris des utilisateurs (user_id, content_type, content_id) |
 | `watchlist` | Liste de lecture des utilisateurs |
 | `user_notes` | Notes et commentaires des utilisateurs (1-5 étoiles) |
+| `history` | Historique de consultation des contenus |
 | `refresh_tokens` | Tokens de rafraîchissement JWT avec rotation |
 
 ---
@@ -221,6 +222,23 @@ npm run server
 | `/admin/movies` | Admin | Gestion des films |
 | `/admin/series` | Admin | Gestion des séries |
 | `/admin/categories` | Admin | Gestion des catégories |
+
+---
+
+## Données de démonstration
+
+Le catalogue est pré-rempli avec **39 films** et **35 séries** répartis sur 8 catégories :
+
+| Catégorie | Films | Séries |
+|-----------|-------|--------|
+| Action | Mad Max: Fury Road, John Wick, Top Gun: Maverick, Mission: Impossible... | Breaking Bad, The Last of Us, Peaky Blinders, Squid Game |
+| Science-Fiction | Blade Runner 2049, The Matrix, Dune, Arrival | Black Mirror, Westworld, Severance, Stranger Things |
+| Drame | The Godfather, Schindler's List, Forrest Gump, 12 Angry Men | The Wire, Succession, Chernobyl, Fleabag |
+| Thriller | Pulp Fiction, Se7en, Gone Girl, Knives Out | True Detective, Mindhunter, Dark |
+| Horreur | The Shining, Get Out, Hereditary | The Haunting of Hill House, The Terror |
+| Animation | Spirited Away, The Lion King, Your Name | Attack on Titan, Arcane, Fullmetal Alchemist |
+| Comédie | The Grand Budapest Hotel, Superbad | The Office, Arrested Development |
+| Romance | La La Land, Before Sunrise | Normal People, Outlander |
 
 ---
 
