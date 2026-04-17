@@ -3,9 +3,11 @@ import { ref, computed } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { toast } from 'vue3-toastify'
+import { useI18n } from 'vue-i18n'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const { t } = useI18n()
 
 const form = ref({ nom: '', prenom: '', email: '', mot_de_passe: '', confirm: '' })
 const showPassword = ref(false)
@@ -20,20 +22,20 @@ const passwordChecks = computed(() => ({
 
 function validate() {
   const e: Record<string, string> = {}
-  if (!form.value.nom) e.nom = 'Nom requis'
-  if (!form.value.prenom) e.prenom = 'Prénom requis'
-  if (!form.value.email) e.email = 'Email requis'
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.value.email)) e.email = 'Email invalide'
+  if (!form.value.nom) e.nom = t('register.validation.lastNameRequired')
+  if (!form.value.prenom) e.prenom = t('register.validation.firstNameRequired')
+  if (!form.value.email) e.email = t('register.validation.emailRequired')
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.value.email)) e.email = t('register.validation.emailInvalid')
   if (!form.value.mot_de_passe) {
-    e.mot_de_passe = 'Mot de passe requis'
+    e.mot_de_passe = t('register.validation.passwordRequired')
   } else if (form.value.mot_de_passe.length < 8) {
-    e.mot_de_passe = 'Minimum 8 caractères'
+    e.mot_de_passe = t('register.validation.passwordMin')
   } else if (!/[A-Z]/.test(form.value.mot_de_passe)) {
-    e.mot_de_passe = 'Au moins une lettre majuscule requise'
+    e.mot_de_passe = t('register.validation.passwordUppercase')
   } else if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]/.test(form.value.mot_de_passe)) {
-    e.mot_de_passe = 'Au moins un caractère spécial requis (!@#$%^&*...)'
+    e.mot_de_passe = t('register.validation.passwordSpecial')
   }
-  if (form.value.mot_de_passe !== form.value.confirm) e.confirm = 'Les mots de passe ne correspondent pas'
+  if (form.value.mot_de_passe !== form.value.confirm) e.confirm = t('register.validation.passwordMatch')
   errors.value = e
   return Object.keys(e).length === 0
 }
@@ -44,10 +46,10 @@ async function handleSubmit() {
   const result = await authStore.register(form.value.nom, form.value.prenom, form.value.email, form.value.mot_de_passe)
   submitting.value = false
   if (result.success) {
-    toast.success('Inscription réussie !')
+    toast.success(t('register.success'))
     router.push('/')
   } else {
-    errors.value.general = result.error || 'Erreur lors de l\'inscription'
+    errors.value.general = result.error || t('register.error')
   }
 }
 </script>
@@ -64,35 +66,35 @@ async function handleSubmit() {
         <span class="brand-icon">N</span>
         <span class="brand-text">NETFILM</span>
       </div>
-      <h1 class="auth-title">Créer un compte</h1>
-      <p class="auth-subtitle">Rejoignez la communauté Netfilm</p>
+      <h1 class="auth-title">{{ t('register.title') }}</h1>
+      <p class="auth-subtitle">{{ t('register.subtitle') }}</p>
 
       <div v-if="errors.general" class="alert-error">{{ errors.general }}</div>
 
       <form @submit.prevent="handleSubmit">
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Prénom</label>
+            <label class="form-label">{{ t('register.firstName') }}</label>
             <input v-model="form.prenom" type="text" class="form-input" :class="{ error: errors.prenom }" placeholder="Jean" />
             <p v-if="errors.prenom" class="form-error">{{ errors.prenom }}</p>
           </div>
           <div class="form-group">
-            <label class="form-label">Nom</label>
+            <label class="form-label">{{ t('register.lastName') }}</label>
             <input v-model="form.nom" type="text" class="form-input" :class="{ error: errors.nom }" placeholder="Dupont" />
             <p v-if="errors.nom" class="form-error">{{ errors.nom }}</p>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Email</label>
+          <label class="form-label">{{ t('register.email') }}</label>
           <input v-model="form.email" type="email" class="form-input" :class="{ error: errors.email }" placeholder="jean.dupont@email.com" />
           <p v-if="errors.email" class="form-error">{{ errors.email }}</p>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Mot de passe</label>
+          <label class="form-label">{{ t('register.password') }}</label>
           <div class="password-wrapper">
-            <input v-model="form.mot_de_passe" :type="showPassword ? 'text' : 'password'" class="form-input" :class="{ error: errors.mot_de_passe }" placeholder="Minimum 8 caractères" />
+            <input v-model="form.mot_de_passe" :type="showPassword ? 'text' : 'password'" class="form-input" :class="{ error: errors.mot_de_passe }" :placeholder="t('register.passwordMin')" />
             <button type="button" class="password-toggle" @click="showPassword = !showPassword">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
@@ -104,33 +106,33 @@ async function handleSubmit() {
           <ul v-if="form.mot_de_passe.length > 0" class="password-requirements">
             <li :class="{ valid: passwordChecks.length, invalid: !passwordChecks.length }">
               <span class="req-icon">{{ passwordChecks.length ? '✓' : '✗' }}</span>
-              Minimum 8 caractères
+              {{ t('register.passwordMin') }}
             </li>
             <li :class="{ valid: passwordChecks.uppercase, invalid: !passwordChecks.uppercase }">
               <span class="req-icon">{{ passwordChecks.uppercase ? '✓' : '✗' }}</span>
-              Au moins une lettre majuscule
+              {{ t('register.passwordUppercase') }}
             </li>
             <li :class="{ valid: passwordChecks.special, invalid: !passwordChecks.special }">
               <span class="req-icon">{{ passwordChecks.special ? '✓' : '✗' }}</span>
-              Au moins un caractère spécial (!@#$%^&*...)
+              {{ t('register.passwordSpecial') }}
             </li>
           </ul>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Confirmer le mot de passe</label>
-          <input v-model="form.confirm" type="password" class="form-input" :class="{ error: errors.confirm }" placeholder="Répétez le mot de passe" />
+          <label class="form-label">{{ t('register.confirmPassword') }}</label>
+          <input v-model="form.confirm" type="password" class="form-input" :class="{ error: errors.confirm }" :placeholder="t('register.confirmPassword')" />
           <p v-if="errors.confirm" class="form-error">{{ errors.confirm }}</p>
         </div>
 
         <button type="submit" class="btn btn-primary btn-lg auth-btn" :disabled="submitting">
-          {{ submitting ? 'Création...' : 'Créer mon compte' }}
+          {{ submitting ? t('register.submitting') : t('register.submit') }}
         </button>
       </form>
 
       <p class="auth-link">
-        Déjà un compte ?
-        <RouterLink to="/login">Se connecter</RouterLink>
+        {{ t('register.hasAccount') }}
+        <RouterLink to="/login">{{ t('register.signIn') }}</RouterLink>
       </p>
     </div>
   </div>

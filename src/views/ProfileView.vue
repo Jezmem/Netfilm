@@ -2,8 +2,10 @@
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { toast } from 'vue3-toastify'
+import { useI18n } from 'vue-i18n'
 
 const authStore = useAuthStore()
+const { t } = useI18n()
 
 const form = ref({
   nom: authStore.user?.nom || '',
@@ -19,11 +21,11 @@ const fileInput = ref<HTMLInputElement | null>(null)
 
 function validate() {
   const e: Record<string, string> = {}
-  if (!form.value.nom) e.nom = 'Nom requis'
-  if (!form.value.prenom) e.prenom = 'Prénom requis'
-  if (!form.value.email) e.email = 'Email requis'
-  if (form.value.mot_de_passe && form.value.mot_de_passe.length < 8) e.mot_de_passe = 'Minimum 8 caractères'
-  if (form.value.mot_de_passe && form.value.mot_de_passe !== form.value.confirm) e.confirm = 'Les mots de passe ne correspondent pas'
+  if (!form.value.nom) e.nom = t('register.validation.lastNameRequired')
+  if (!form.value.prenom) e.prenom = t('register.validation.firstNameRequired')
+  if (!form.value.email) e.email = t('register.validation.emailRequired')
+  if (form.value.mot_de_passe && form.value.mot_de_passe.length < 8) e.mot_de_passe = t('register.validation.passwordMin')
+  if (form.value.mot_de_passe && form.value.mot_de_passe !== form.value.confirm) e.confirm = t('register.validation.passwordMatch')
   errors.value = e
   return Object.keys(e).length === 0
 }
@@ -37,9 +39,9 @@ async function handleSubmit() {
     await authStore.updateProfile(payload)
     form.value.mot_de_passe = ''
     form.value.confirm = ''
-    toast.success('Profil mis à jour')
+    toast.success(t('profile.success'))
   } catch (err: any) {
-    toast.error(err.response?.data?.error || 'Erreur lors de la mise à jour')
+    toast.error(err.response?.data?.error || t('profile.error'))
   } finally {
     submitting.value = false
   }
@@ -48,13 +50,13 @@ async function handleSubmit() {
 async function handleAvatarUpload(e: Event) {
   const file = (e.target as HTMLInputElement).files?.[0]
   if (!file) return
-  if (file.size > 5 * 1024 * 1024) { toast.error('Fichier trop volumineux (max 5MB)'); return }
+  if (file.size > 5 * 1024 * 1024) { toast.error(t('profile.avatarTooBig')); return }
   uploadingAvatar.value = true
   try {
     await authStore.uploadAvatar(file)
-    toast.success('Avatar mis à jour')
+    toast.success(t('profile.avatarSuccess'))
   } catch {
-    toast.error('Erreur lors de l\'upload')
+    toast.error(t('profile.avatarError'))
   } finally {
     uploadingAvatar.value = false
   }
@@ -64,7 +66,7 @@ async function handleAvatarUpload(e: Event) {
 <template>
   <div class="profile-page container">
     <div class="page-header">
-      <h1 class="page-title">Mon Profil</h1>
+      <h1 class="page-title">{{ t('profile.title') }}</h1>
     </div>
 
     <div class="profile-layout">
@@ -77,7 +79,7 @@ async function handleAvatarUpload(e: Event) {
               <path d="M12 15.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4z"/>
               <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9z"/>
             </svg>
-            <span>Modifier</span>
+            <span>{{ t('profile.edit') }}</span>
           </div>
           <div v-if="uploadingAvatar" class="avatar-loading">
             <div class="spinner" style="width:24px;height:24px;border-width:2px;"></div>
@@ -88,54 +90,54 @@ async function handleAvatarUpload(e: Event) {
           <h2 class="avatar-name">{{ authStore.fullName }}</h2>
           <p class="avatar-email">{{ authStore.user?.email }}</p>
           <span class="badge" :class="authStore.isAdmin ? 'badge-accent' : 'badge-success'">
-            {{ authStore.isAdmin ? 'Administrateur' : 'Utilisateur' }}
+            {{ authStore.isAdmin ? t('profile.roles.admin') : t('profile.roles.user') }}
           </span>
         </div>
       </div>
 
       <div class="form-section card">
-        <h2 class="section-title">Informations personnelles</h2>
+        <h2 class="section-title">{{ t('profile.personalInfo') }}</h2>
         <div v-if="errors.general" class="alert-error">{{ errors.general }}</div>
         <form @submit.prevent="handleSubmit">
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Prénom</label>
+              <label class="form-label">{{ t('profile.firstName') }}</label>
               <input v-model="form.prenom" type="text" class="form-input" :class="{ error: errors.prenom }" />
               <p v-if="errors.prenom" class="form-error">{{ errors.prenom }}</p>
             </div>
             <div class="form-group">
-              <label class="form-label">Nom</label>
+              <label class="form-label">{{ t('profile.lastName') }}</label>
               <input v-model="form.nom" type="text" class="form-input" :class="{ error: errors.nom }" />
               <p v-if="errors.nom" class="form-error">{{ errors.nom }}</p>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label">Email</label>
+            <label class="form-label">{{ t('profile.email') }}</label>
             <input v-model="form.email" type="email" class="form-input" :class="{ error: errors.email }" />
             <p v-if="errors.email" class="form-error">{{ errors.email }}</p>
           </div>
 
           <div class="divider">
-            <span>Changer le mot de passe (optionnel)</span>
+            <span>{{ t('profile.changePassword') }}</span>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Nouveau mot de passe</label>
-              <input v-model="form.mot_de_passe" type="password" class="form-input" :class="{ error: errors.mot_de_passe }" placeholder="Laisser vide pour ne pas changer" />
+              <label class="form-label">{{ t('profile.newPassword') }}</label>
+              <input v-model="form.mot_de_passe" type="password" class="form-input" :class="{ error: errors.mot_de_passe }" :placeholder="t('profile.newPasswordHint')" />
               <p v-if="errors.mot_de_passe" class="form-error">{{ errors.mot_de_passe }}</p>
             </div>
             <div class="form-group">
-              <label class="form-label">Confirmer</label>
-              <input v-model="form.confirm" type="password" class="form-input" :class="{ error: errors.confirm }" placeholder="Confirmez le nouveau mot de passe" />
+              <label class="form-label">{{ t('profile.confirmPassword') }}</label>
+              <input v-model="form.confirm" type="password" class="form-input" :class="{ error: errors.confirm }" :placeholder="t('profile.confirmPasswordPlaceholder')" />
               <p v-if="errors.confirm" class="form-error">{{ errors.confirm }}</p>
             </div>
           </div>
 
           <div class="form-actions">
             <button type="submit" class="btn btn-primary" :disabled="submitting">
-              {{ submitting ? 'Enregistrement...' : 'Sauvegarder les modifications' }}
+              {{ submitting ? t('profile.saving') : t('profile.save') }}
             </button>
           </div>
         </form>

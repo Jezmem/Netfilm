@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import type { Category } from '@/stores/content'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   categories: Category[]
@@ -50,7 +53,7 @@ function updateSort(combined: string) {
       <input
         type="text"
         class="search-input"
-        placeholder="Rechercher un film, une série..."
+        :placeholder="t('search.placeholder')"
         :value="localFilters.search"
         @input="update('search', ($event.target as HTMLInputElement).value)"
       />
@@ -58,29 +61,29 @@ function updateSort(combined: string) {
 
     <div class="filters">
       <select class="filter-select" :value="localFilters.type" @change="update('type', ($event.target as HTMLSelectElement).value)">
-        <option value="">Tout</option>
-        <option value="movie">Films</option>
-        <option value="series">Séries</option>
+        <option value="">{{ t('search.all') }}</option>
+        <option value="movie">{{ t('search.movies') }}</option>
+        <option value="series">{{ t('search.series') }}</option>
       </select>
 
       <select class="filter-select" :value="localFilters.category_id" @change="update('category_id', ($event.target as HTMLSelectElement).value)">
-        <option value="">Toutes catégories</option>
+        <option value="">{{ t('search.allCategories') }}</option>
         <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.nom }}</option>
       </select>
 
       <select class="filter-select" :value="localFilters.note_min" @change="update('note_min', ($event.target as HTMLSelectElement).value)">
-        <option value="">Note min.</option>
-        <option value="9">9+ Exceptionnel</option>
-        <option value="8">8+ Excellent</option>
-        <option value="7">7+ Très bon</option>
-        <option value="6">6+ Bon</option>
+        <option value="">{{ t('search.minRating') }}</option>
+        <option value="9">{{ t('search.rating9') }}</option>
+        <option value="8">{{ t('search.rating8') }}</option>
+        <option value="7">{{ t('search.rating7') }}</option>
+        <option value="6">{{ t('search.rating6') }}</option>
       </select>
 
       <select class="filter-select" :value="`${localFilters.sort}-${localFilters.order}`" @change="(e) => updateSort((e.target as HTMLSelectElement).value)">
-        <option value="date_creation-desc">Plus récents</option>
-        <option value="note-desc">Mieux notés</option>
-        <option value="titre-asc">A-Z</option>
-        <option value="date_sortie-desc">Sortie récente</option>
+        <option value="date_creation-desc">{{ t('search.sortNewest') }}</option>
+        <option value="note-desc">{{ t('search.sortRating') }}</option>
+        <option value="titre-asc">{{ t('search.sortAZ') }}</option>
+        <option value="date_sortie-desc">{{ t('search.sortRelease') }}</option>
       </select>
     </div>
   </div>

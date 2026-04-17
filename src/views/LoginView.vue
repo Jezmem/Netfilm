@@ -3,9 +3,11 @@ import { ref } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { toast } from 'vue3-toastify'
+import { useI18n } from 'vue-i18n'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const { t } = useI18n()
 
 const email = ref('')
 const password = ref('')
@@ -16,9 +18,9 @@ const errors = ref({ email: '', password: '', general: '' })
 function validate() {
   errors.value = { email: '', password: '', general: '' }
   let valid = true
-  if (!email.value) { errors.value.email = 'Email requis'; valid = false }
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) { errors.value.email = 'Email invalide'; valid = false }
-  if (!password.value) { errors.value.password = 'Mot de passe requis'; valid = false }
+  if (!email.value) { errors.value.email = t('login.validation.emailRequired'); valid = false }
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) { errors.value.email = t('login.validation.emailInvalid'); valid = false }
+  if (!password.value) { errors.value.password = t('login.validation.passwordRequired'); valid = false }
   return valid
 }
 
@@ -28,11 +30,11 @@ async function handleSubmit() {
   const result = await authStore.login(email.value, password.value)
   submitting.value = false
   if (result.success) {
-    toast.success('Connexion réussie !')
+    toast.success(t('login.success'))
     const redirect = (router.currentRoute.value.query.redirect as string) || '/'
     router.push(redirect)
   } else {
-    errors.value.general = result.error || 'Erreur de connexion'
+    errors.value.general = result.error || t('login.error')
   }
 }
 </script>
@@ -49,20 +51,20 @@ async function handleSubmit() {
         <span class="brand-icon">N</span>
         <span class="brand-text">NETFILM</span>
       </div>
-      <h1 class="auth-title">Connexion</h1>
-      <p class="auth-subtitle">Accédez à votre espace personnel</p>
+      <h1 class="auth-title">{{ t('login.title') }}</h1>
+      <p class="auth-subtitle">{{ t('login.subtitle') }}</p>
 
       <div v-if="errors.general" class="alert-error">{{ errors.general }}</div>
 
       <form @submit.prevent="handleSubmit">
         <div class="form-group">
-          <label class="form-label">Email</label>
+          <label class="form-label">{{ t('login.email') }}</label>
           <input v-model="email" type="email" class="form-input" :class="{ error: errors.email }" placeholder="votre@email.com" />
           <p v-if="errors.email" class="form-error">{{ errors.email }}</p>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Mot de passe</label>
+          <label class="form-label">{{ t('login.password') }}</label>
           <div class="password-wrapper">
             <input v-model="password" :type="showPassword ? 'text' : 'password'" class="form-input" :class="{ error: errors.password }" placeholder="Votre mot de passe" />
             <button type="button" class="password-toggle" @click="showPassword = !showPassword">
@@ -80,13 +82,13 @@ async function handleSubmit() {
         </div>
 
         <button type="submit" class="btn btn-primary btn-lg auth-btn" :disabled="submitting">
-          {{ submitting ? 'Connexion...' : 'Se connecter' }}
+          {{ submitting ? t('login.submitting') : t('login.submit') }}
         </button>
       </form>
 
       <p class="auth-link">
-        Pas encore de compte ?
-        <RouterLink to="/register">Créer un compte</RouterLink>
+        {{ t('login.noAccount') }}
+        <RouterLink to="/register">{{ t('login.createAccount') }}</RouterLink>
       </p>
     </div>
   </div>

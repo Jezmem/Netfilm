@@ -3,9 +3,12 @@ import { ref, computed } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { toast } from 'vue3-toastify'
+import { useI18n } from 'vue-i18n'
+import { i18n } from '@/i18n'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const { t, locale } = useI18n()
 const mobileOpen = ref(false)
 const userMenuOpen = ref(false)
 
@@ -18,7 +21,14 @@ async function handleLogout() {
   await authStore.logout()
   userMenuOpen.value = false
   router.push('/login')
-  toast.success('Déconnexion réussie')
+  toast.success(t('nav.loggedOut'))
+}
+
+function toggleLocale() {
+  const newLocale = locale.value === 'fr' ? 'en' : 'fr'
+  locale.value = newLocale
+  i18n.global.locale.value = newLocale
+  localStorage.setItem('locale', newLocale)
 }
 </script>
 
@@ -31,16 +41,21 @@ async function handleLogout() {
       </RouterLink>
 
       <div class="navbar-center">
-        <RouterLink to="/" class="nav-link" :class="{ active: $route.path === '/' }">Accueil</RouterLink>
-        <RouterLink to="/?type=movie" class="nav-link">Films</RouterLink>
-        <RouterLink to="/?type=series" class="nav-link">Séries</RouterLink>
+        <RouterLink to="/" class="nav-link" :class="{ active: $route.path === '/' }">{{ t('nav.home') }}</RouterLink>
+        <RouterLink to="/?type=movie" class="nav-link">{{ t('nav.movies') }}</RouterLink>
+        <RouterLink to="/?type=series" class="nav-link">{{ t('nav.series') }}</RouterLink>
         <template v-if="authStore.isAuthenticated">
-          <RouterLink to="/favorites" class="nav-link">Favoris</RouterLink>
-          <RouterLink to="/watchlist" class="nav-link">Ma Liste</RouterLink>
+          <RouterLink to="/favorites" class="nav-link">{{ t('nav.favorites') }}</RouterLink>
+          <RouterLink to="/watchlist" class="nav-link">{{ t('nav.watchlist') }}</RouterLink>
         </template>
       </div>
 
       <div class="navbar-right">
+        <button class="locale-toggle" @click="toggleLocale" :title="locale === 'fr' ? 'Switch to English' : 'Passer en français'">
+          <span class="locale-flag">{{ locale === 'fr' ? '🇬🇧' : '🇫🇷' }}</span>
+          <span class="locale-label">{{ locale === 'fr' ? 'EN' : 'FR' }}</span>
+        </button>
+
         <template v-if="authStore.isAuthenticated">
           <div class="user-menu" @click="userMenuOpen = !userMenuOpen">
             <div class="user-avatar">
@@ -55,31 +70,31 @@ async function handleLogout() {
             <Transition name="fade">
               <div v-if="userMenuOpen" class="dropdown" @click.stop>
                 <RouterLink to="/profile" class="dropdown-item" @click="userMenuOpen = false">
-                  Mon Profil
+                  {{ t('nav.myProfile') }}
                 </RouterLink>
                 <RouterLink to="/favorites" class="dropdown-item" @click="userMenuOpen = false">
-                  Mes Favoris
+                  {{ t('nav.myFavorites') }}
                 </RouterLink>
                 <RouterLink to="/watchlist" class="dropdown-item" @click="userMenuOpen = false">
-                  Ma Watchlist
+                  {{ t('nav.myWatchlist') }}
                 </RouterLink>
                 <template v-if="authStore.isAdmin">
                   <div class="dropdown-divider"></div>
                   <RouterLink to="/admin" class="dropdown-item dropdown-admin" @click="userMenuOpen = false">
-                    Administration
+                    {{ t('nav.admin') }}
                   </RouterLink>
                 </template>
                 <div class="dropdown-divider"></div>
                 <button class="dropdown-item dropdown-logout" @click="handleLogout">
-                  Déconnexion
+                  {{ t('nav.logout') }}
                 </button>
               </div>
             </Transition>
           </div>
         </template>
         <template v-else>
-          <RouterLink to="/login" class="btn btn-ghost btn-sm">Connexion</RouterLink>
-          <RouterLink to="/register" class="btn btn-primary btn-sm">Inscription</RouterLink>
+          <RouterLink to="/login" class="btn btn-ghost btn-sm">{{ t('nav.login') }}</RouterLink>
+          <RouterLink to="/register" class="btn btn-primary btn-sm">{{ t('nav.register') }}</RouterLink>
         </template>
       </div>
 
@@ -90,19 +105,20 @@ async function handleLogout() {
 
     <Transition name="slide-up">
       <div v-if="mobileOpen" class="mobile-menu">
-        <RouterLink to="/" class="mobile-link" @click="mobileOpen = false">Accueil</RouterLink>
-        <RouterLink to="/?type=movie" class="mobile-link" @click="mobileOpen = false">Films</RouterLink>
-        <RouterLink to="/?type=series" class="mobile-link" @click="mobileOpen = false">Séries</RouterLink>
+        <RouterLink to="/" class="mobile-link" @click="mobileOpen = false">{{ t('nav.home') }}</RouterLink>
+        <RouterLink to="/?type=movie" class="mobile-link" @click="mobileOpen = false">{{ t('nav.movies') }}</RouterLink>
+        <RouterLink to="/?type=series" class="mobile-link" @click="mobileOpen = false">{{ t('nav.series') }}</RouterLink>
         <template v-if="authStore.isAuthenticated">
-          <RouterLink to="/favorites" class="mobile-link" @click="mobileOpen = false">Favoris</RouterLink>
-          <RouterLink to="/watchlist" class="mobile-link" @click="mobileOpen = false">Ma Liste</RouterLink>
-          <RouterLink to="/profile" class="mobile-link" @click="mobileOpen = false">Profil</RouterLink>
-          <button class="mobile-link mobile-logout" @click="handleLogout">Déconnexion</button>
+          <RouterLink to="/favorites" class="mobile-link" @click="mobileOpen = false">{{ t('nav.favorites') }}</RouterLink>
+          <RouterLink to="/watchlist" class="mobile-link" @click="mobileOpen = false">{{ t('nav.watchlist') }}</RouterLink>
+          <RouterLink to="/profile" class="mobile-link" @click="mobileOpen = false">{{ t('nav.profile') }}</RouterLink>
+          <button class="mobile-link mobile-logout" @click="handleLogout">{{ t('nav.logout') }}</button>
         </template>
         <template v-else>
-          <RouterLink to="/login" class="mobile-link" @click="mobileOpen = false">Connexion</RouterLink>
-          <RouterLink to="/register" class="mobile-link" @click="mobileOpen = false">Inscription</RouterLink>
+          <RouterLink to="/login" class="mobile-link" @click="mobileOpen = false">{{ t('nav.login') }}</RouterLink>
+          <RouterLink to="/register" class="mobile-link" @click="mobileOpen = false">{{ t('nav.register') }}</RouterLink>
         </template>
+        <button class="mobile-link mobile-locale" @click="toggleLocale">{{ locale === 'fr' ? 'English' : 'Français' }}</button>
       </div>
     </Transition>
   </nav>
@@ -171,6 +187,24 @@ async function handleLogout() {
   flex-shrink: 0;
   position: relative;
 }
+.locale-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-3);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  letter-spacing: 0.5px;
+}
+.locale-toggle:hover { border-color: var(--color-border-light); color: var(--color-text); }
+.locale-flag { font-size: 14px; }
+.locale-label { font-size: 11px; font-weight: 700; }
 .user-menu {
   display: flex;
   align-items: center;
@@ -263,6 +297,7 @@ async function handleLogout() {
 }
 .mobile-link:hover { background: var(--color-bg-3); color: var(--color-text); }
 .mobile-logout { color: var(--color-error) !important; }
+.mobile-locale { color: var(--color-primary) !important; font-weight: 600; }
 
 @media (max-width: 900px) {
   .navbar-center { display: none; }
