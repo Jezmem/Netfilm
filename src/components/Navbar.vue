@@ -37,6 +37,7 @@ async function handleLogout() {
         <template v-if="authStore.isAuthenticated">
           <RouterLink to="/favorites" class="nav-link">Favoris</RouterLink>
           <RouterLink to="/watchlist" class="nav-link">Ma Liste</RouterLink>
+          <RouterLink to="/history" class="nav-link">Historique</RouterLink>
         </template>
       </div>
 
@@ -62,6 +63,9 @@ async function handleLogout() {
                 </RouterLink>
                 <RouterLink to="/watchlist" class="dropdown-item" @click="userMenuOpen = false">
                   Ma Watchlist
+                </RouterLink>
+                <RouterLink to="/history" class="dropdown-item" @click="userMenuOpen = false">
+                  Historique
                 </RouterLink>
                 <template v-if="authStore.isAdmin">
                   <div class="dropdown-divider"></div>
@@ -96,6 +100,7 @@ async function handleLogout() {
         <template v-if="authStore.isAuthenticated">
           <RouterLink to="/favorites" class="mobile-link" @click="mobileOpen = false">Favoris</RouterLink>
           <RouterLink to="/watchlist" class="mobile-link" @click="mobileOpen = false">Ma Liste</RouterLink>
+          <RouterLink to="/history" class="mobile-link" @click="mobileOpen = false">Historique</RouterLink>
           <RouterLink to="/profile" class="mobile-link" @click="mobileOpen = false">Profil</RouterLink>
           <button class="mobile-link mobile-logout" @click="handleLogout">Déconnexion</button>
         </template>

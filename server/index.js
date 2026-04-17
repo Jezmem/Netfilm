@@ -15,6 +15,7 @@ import categoryRoutes from './routes/categories.js'
 import favoritesRoutes from './routes/favorites.js'
 import watchlistRoutes from './routes/watchlist.js'
 import notesRoutes from './routes/notes.js'
+import historyRoutes from './routes/history.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -46,6 +47,7 @@ app.use('/api/categories', categoryRoutes)
 app.use('/api/favorites', favoritesRoutes)
 app.use('/api/watchlist', watchlistRoutes)
 app.use('/api/notes', notesRoutes)
+app.use('/api/history', historyRoutes)
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() })

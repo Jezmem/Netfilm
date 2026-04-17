@@ -54,6 +54,15 @@ export interface FavoriteItem {
   content?: Movie | Serie
 }
 
+export interface HistoryItem {
+  id: string
+  user_id: string
+  content_type: 'movie' | 'series'
+  content_id: string
+  visited_at: string
+  content?: Movie | Serie
+}
+
 export interface PaginatedResponse<T> {
   data: T[]
   total: number
@@ -67,6 +76,7 @@ export const useContentStore = defineStore('content', () => {
   const favorites = ref<FavoriteItem[]>([])
   const watchlist = ref<FavoriteItem[]>([])
   const myNotes = ref<UserNote[]>([])
+  const history = ref<HistoryItem[]>([])
 
   async function fetchCategories() {
     const { data } = await api.get('/categories')
@@ -159,11 +169,33 @@ export const useContentStore = defineStore('content', () => {
     return data as UserNote | null
   }
 
+  async function fetchHistory(params: { limit?: number; offset?: number } = {}) {
+    const { data } = await api.get('/history', { params })
+    history.value = data
+    return data as HistoryItem[]
+  }
+
+  async function addToHistory(content_type: string, content_id: string) {
+    const { data } = await api.post('/history', { content_type, content_id })
+    return data as HistoryItem
+  }
+
+  async function removeFromHistory(id: string) {
+    await api.delete(`/history/${id}`)
+    history.value = history.value.filter(h => h.id !== id)
+  }
+
+  async function clearHistory() {
+    await api.delete('/history/clear')
+    history.value = []
+  }
+
   return {
     categories,
     favorites,
     watchlist,
     myNotes,
+    history,
     fetchCategories,
     fetchMovies,
     fetchMovie,
@@ -180,6 +212,10 @@ export const useContentStore = defineStore('content', () => {
     fetchMyNotes,
     addNote,
     deleteNote,
-    getNoteForContent
+    getNoteForContent,
+    fetchHistory,
+    addToHistory,
+    removeFromHistory,
+    clearHistory
   }
 })

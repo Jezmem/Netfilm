@@ -33,7 +33,8 @@ async function loadData() {
       const [favRes, watchRes, noteRes] = await Promise.all([
         contentStore.checkFavorite('movie', route.params.id as string),
         contentStore.checkWatchlist('movie', route.params.id as string),
-        contentStore.getNoteForContent('movie', route.params.id as string)
+        contentStore.getNoteForContent('movie', route.params.id as string),
+        contentStore.addToHistory('movie', route.params.id as string)
       ])
       isFavorite.value = favRes.isFavorite
       favoriteId.value = favRes.favoriteId
