@@ -3,8 +3,10 @@ import { ref, onMounted, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useContentStore } from '@/stores/content'
 import { toast } from 'vue3-toastify'
+import { useI18n } from 'vue-i18n'
 
 const contentStore = useContentStore()
+const { t } = useI18n()
 const loading = ref(true)
 const filter = ref<'all' | 'movie' | 'series'>('all')
 
@@ -20,18 +22,18 @@ const filtered = computed(() => {
 
 async function remove(id: string) {
   await contentStore.removeFromWatchlist(id)
-  toast.success('Retiré de la watchlist')
+  toast.success(t('watchlist.removed'))
 }
 </script>
 
 <template>
   <div class="list-page container">
     <div class="page-header">
-      <h1 class="page-title">Ma Watchlist</h1>
+      <h1 class="page-title">{{ t('watchlist.title') }}</h1>
       <div class="filter-tabs">
-        <button class="filter-tab" :class="{ active: filter === 'all' }" @click="filter = 'all'">Tout</button>
-        <button class="filter-tab" :class="{ active: filter === 'movie' }" @click="filter = 'movie'">Films</button>
-        <button class="filter-tab" :class="{ active: filter === 'series' }" @click="filter = 'series'">Séries</button>
+        <button class="filter-tab" :class="{ active: filter === 'all' }" @click="filter = 'all'">{{ t('watchlist.all') }}</button>
+        <button class="filter-tab" :class="{ active: filter === 'movie' }" @click="filter = 'movie'">{{ t('watchlist.movies') }}</button>
+        <button class="filter-tab" :class="{ active: filter === 'series' }" @click="filter = 'series'">{{ t('watchlist.series') }}</button>
       </div>
     </div>
 
@@ -39,9 +41,9 @@ async function remove(id: string) {
 
     <div v-else-if="filtered.length === 0" class="empty-state">
       <div class="empty-icon">⏱</div>
-      <h3>Watchlist vide</h3>
-      <p>Ajoutez des films et séries à regarder plus tard</p>
-      <RouterLink to="/" class="btn btn-primary" style="margin-top:16px">Découvrir du contenu</RouterLink>
+      <h3>{{ t('watchlist.empty') }}</h3>
+      <p>{{ t('watchlist.emptyHint') }}</p>
+      <RouterLink to="/" class="btn btn-primary" style="margin-top:16px">{{ t('watchlist.discover') }}</RouterLink>
     </div>
 
     <div v-else class="content-grid">
@@ -51,18 +53,18 @@ async function remove(id: string) {
             <img :src="item.content?.image || 'https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg'" :alt="item.content?.titre" />
           </div>
           <div class="list-item-info">
-            <div class="list-item-type">{{ item.content_type === 'movie' ? 'Film' : 'Série' }}</div>
-            <h3 class="list-item-title">{{ item.content?.titre || 'Contenu inconnu' }}</h3>
+            <div class="list-item-type">{{ item.content_type === 'movie' ? t('watchlist.movie') : t('watchlist.serie') }}</div>
+            <h3 class="list-item-title">{{ item.content?.titre || t('watchlist.unknownContent') }}</h3>
             <div class="list-item-meta">
               <span v-if="item.content?.note" class="list-item-note">
                 <svg viewBox="0 0 24 24" fill="#f5c518" width="12" height="12"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 {{ item.content.note.toFixed(1) }}
               </span>
-              <span class="list-item-date">Ajouté {{ new Date(item.date_ajout).toLocaleDateString('fr-FR') }}</span>
+              <span class="list-item-date">{{ t('watchlist.addedOn', { date: new Date(item.date_ajout).toLocaleDateString() }) }}</span>
             </div>
           </div>
         </RouterLink>
-        <button class="remove-btn" @click="remove(item.id)" title="Retirer de la watchlist">
+        <button class="remove-btn" @click="remove(item.id)" :title="t('watchlist.remove')">
           <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
             <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
           </svg>

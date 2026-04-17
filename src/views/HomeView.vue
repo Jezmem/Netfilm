@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useContentStore } from '@/stores/content'
 import ContentCard from '@/components/ContentCard.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import type { Movie, Serie } from '@/stores/content'
+
+const { t } = useI18n()
 
 const route = useRoute()
 const contentStore = useContentStore()
@@ -100,9 +103,9 @@ async function goSeriesPage(p: number) {
         <div class="hero-overlay"></div>
       </div>
       <div class="container hero-content">
-        <div class="hero-badge">Découvrez</div>
-        <h1 class="hero-title">Votre univers cinéma<br />à portée de main</h1>
-        <p class="hero-sub">Explorez des milliers de films et séries, créez votre collection personnelle et partagez vos avis.</p>
+        <div class="hero-badge">{{ t('home.hero.discover') }}</div>
+        <h1 class="hero-title">{{ t('home.hero.tagline') }}</h1>
+        <p class="hero-sub">{{ t('home.hero.subtitle') }}</p>
       </div>
     </section>
 
@@ -119,8 +122,8 @@ async function goSeriesPage(p: number) {
         <section v-if="showMovies && movies.length > 0" class="content-block">
           <div class="section-header">
             <h2 class="section-title">
-              <span class="section-accent">Films</span>
-              <span class="section-count">{{ moviesTotal }} résultats</span>
+              <span class="section-accent">{{ t('home.movies') }}</span>
+              <span class="section-count">{{ t('home.results', { count: moviesTotal }) }}</span>
             </h2>
           </div>
           <div class="content-grid">
@@ -146,8 +149,8 @@ async function goSeriesPage(p: number) {
         <section v-if="showSeries && series.length > 0" class="content-block">
           <div class="section-header">
             <h2 class="section-title">
-              <span class="section-accent">Séries</span>
-              <span class="section-count">{{ seriesTotal }} résultats</span>
+              <span class="section-accent">{{ t('home.series') }}</span>
+              <span class="section-count">{{ t('home.results', { count: seriesTotal }) }}</span>
             </h2>
           </div>
           <div class="content-grid">
@@ -172,8 +175,8 @@ async function goSeriesPage(p: number) {
 
         <div v-if="!loading && movies.length === 0 && series.length === 0" class="empty-state">
           <div class="empty-icon">🎬</div>
-          <h3>Aucun résultat trouvé</h3>
-          <p>Essayez de modifier vos critères de recherche</p>
+          <h3>{{ t('home.noResults') }}</h3>
+          <p>{{ t('home.noResultsHint') }}</p>
         </div>
       </template>
     </div>

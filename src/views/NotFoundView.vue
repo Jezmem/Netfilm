@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 </script>
 
 <template>
   <div class="not-found">
     <div class="not-found-content">
       <div class="not-found-code">404</div>
-      <h1 class="not-found-title">Page introuvable</h1>
-      <p class="not-found-text">La page que vous recherchez n'existe pas ou a été déplacée.</p>
-      <RouterLink to="/" class="btn btn-primary btn-lg">Retour à l'accueil</RouterLink>
+      <h1 class="not-found-title">{{ t('notFound.title') }}</h1>
+      <p class="not-found-text">{{ t('notFound.message') }}</p>
+      <RouterLink to="/" class="btn btn-primary btn-lg">{{ t('notFound.backHome') }}</RouterLink>
     </div>
   </div>
 </template>

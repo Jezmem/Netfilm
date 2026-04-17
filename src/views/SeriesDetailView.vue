@@ -6,8 +6,10 @@ import { useAuthStore } from '@/stores/auth'
 import RatingStars from '@/components/RatingStars.vue'
 import Modal from '@/components/Modal.vue'
 import { toast } from 'vue3-toastify'
+import { useI18n } from 'vue-i18n'
 import type { Serie } from '@/stores/content'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const contentStore = useContentStore()
@@ -52,11 +54,11 @@ async function toggleFavorite() {
   if (isFavorite.value && favoriteId.value) {
     await contentStore.removeFavorite(favoriteId.value)
     isFavorite.value = false; favoriteId.value = null
-    toast.success('Retiré des favoris')
+    toast.success(t('detail.favoriteRemoved'))
   } else {
     const data = await contentStore.addFavorite('series', route.params.id as string)
     isFavorite.value = true; favoriteId.value = data.id
-    toast.success('Ajouté aux favoris')
+    toast.success(t('detail.favoriteAdded'))
   }
 }
 
@@ -65,25 +67,25 @@ async function toggleWatchlist() {
   if (isInWatchlist.value && watchlistId.value) {
     await contentStore.removeFromWatchlist(watchlistId.value)
     isInWatchlist.value = false; watchlistId.value = null
-    toast.success('Retiré de la watchlist')
+    toast.success(t('detail.watchlistRemoved'))
   } else {
     const data = await contentStore.addToWatchlist('series', route.params.id as string)
     isInWatchlist.value = true; watchlistId.value = data.id
-    toast.success('Ajouté à la watchlist')
+    toast.success(t('detail.watchlistAdded'))
   }
 }
 
 async function submitNote() {
-  if (!noteValue.value) { toast.error('Sélectionnez une note'); return }
+  if (!noteValue.value) { toast.error(t('detail.noteRequired')); return }
   submittingNote.value = true
   try {
     const result = await contentStore.addNote('series', route.params.id as string, noteValue.value, noteComment.value)
     userNote.value = result
     showNoteModal.value = false
-    toast.success(result.updated ? 'Note mise à jour' : 'Note ajoutée')
+    toast.success(result.updated ? t('detail.noteUpdated') : t('detail.noteAdded'))
     await loadData()
   } catch {
-    toast.error('Erreur lors de l\'enregistrement')
+    toast.error(t('detail.saveError'))
   } finally {
     submittingNote.value = false
   }
@@ -113,7 +115,7 @@ onMounted(loadData)
           </div>
           <div class="detail-info">
             <div class="detail-badges">
-              <span class="badge badge-accent">Série</span>
+              <span class="badge badge-accent">{{ t('detail.serie') }}</span>
               <span v-if="serie.categories" class="badge badge-primary">{{ serie.categories.nom }}</span>
             </div>
             <h1 class="detail-title">{{ serie.titre }}</h1>
@@ -130,19 +132,19 @@ onMounted(loadData)
                 <svg viewBox="0 0 24 24" :fill="isFavorite ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2" width="18" height="18">
                   <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                 </svg>
-                {{ isFavorite ? 'Dans les favoris' : 'Ajouter aux favoris' }}
+                {{ isFavorite ? t('detail.inFavorites') : t('detail.addFavorite') }}
               </button>
               <button class="btn btn-secondary btn-lg" @click="toggleWatchlist">
                 <svg viewBox="0 0 24 24" :fill="isInWatchlist ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2" width="18" height="18">
                   <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
                 </svg>
-                {{ isInWatchlist ? 'Dans ma liste' : 'Ma liste' }}
+                {{ isInWatchlist ? t('detail.inWatchlist') : t('detail.addWatchlist') }}
               </button>
               <button class="btn btn-ghost btn-lg" @click="openNoteModal">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                 </svg>
-                {{ userNote ? 'Modifier ma note' : 'Noter' }}
+                {{ userNote ? t('detail.editRate') : t('detail.rate') }}
               </button>
             </div>
           </div>
@@ -151,7 +153,7 @@ onMounted(loadData)
 
       <div class="container detail-body">
         <section v-if="serie.user_notes && serie.user_notes.length > 0" class="reviews-section">
-          <h2 class="section-title">Avis des utilisateurs ({{ serie.user_notes.length }})</h2>
+          <h2 class="section-title">{{ t('detail.reviews', { count: serie.user_notes.length }) }}</h2>
           <div class="reviews-grid">
             <div v-for="note in serie.user_notes" :key="note.id" class="review-card card">
               <div class="review-header">
@@ -163,7 +165,7 @@ onMounted(loadData)
                   <div class="review-author">{{ note.users?.prenom }} {{ note.users?.nom }}</div>
                   <RatingStars :model-value="note.note" :readonly="true" size="sm" />
                 </div>
-                <span class="review-date">{{ new Date(note.date_creation).toLocaleDateString('fr-FR') }}</span>
+                <span class="review-date">{{ new Date(note.date_creation).toLocaleDateString() }}</span>
               </div>
               <p v-if="note.commentaire" class="review-comment">{{ note.commentaire }}</p>
             </div>
@@ -171,30 +173,30 @@ onMounted(loadData)
         </section>
       </div>
 
-      <Modal v-if="showNoteModal" title="Évaluer cette série" @close="showNoteModal = false">
+      <Modal v-if="showNoteModal" :title="t('detail.rateSerie')" @close="showNoteModal = false">
         <div class="note-modal">
           <p class="note-title">{{ serie.titre }}</p>
           <div class="note-stars-section">
             <RatingStars v-model="noteValue" size="lg" />
-            <span class="note-label">{{ noteValue > 0 ? `${noteValue}/5` : 'Choisissez une note' }}</span>
+            <span class="note-label">{{ noteValue > 0 ? t('detail.ratingOf', { value: noteValue }) : t('detail.chooseRating') }}</span>
           </div>
           <div class="form-group">
-            <label class="form-label">Commentaire (optionnel)</label>
-            <textarea v-model="noteComment" class="form-input" rows="4" placeholder="Partagez votre avis..."></textarea>
+            <label class="form-label">{{ t('detail.comment') }}</label>
+            <textarea v-model="noteComment" class="form-input" rows="4" :placeholder="t('detail.commentPlaceholder')"></textarea>
           </div>
         </div>
         <template #footer>
-          <button class="btn btn-ghost" @click="showNoteModal = false">Annuler</button>
+          <button class="btn btn-ghost" @click="showNoteModal = false">{{ t('detail.cancel') }}</button>
           <button class="btn btn-primary" :disabled="!noteValue || submittingNote" @click="submitNote">
-            {{ submittingNote ? 'Enregistrement...' : 'Enregistrer' }}
+            {{ submittingNote ? t('detail.saving') : t('detail.save') }}
           </button>
         </template>
       </Modal>
     </template>
 
     <div v-else class="not-found">
-      <h2>Série non trouvée</h2>
-      <button class="btn btn-primary" @click="router.push('/')">Retour à l'accueil</button>
+      <h2>{{ t('detail.serieNotFound') }}</h2>
+      <button class="btn btn-primary" @click="router.push('/')">{{ t('detail.backHome') }}</button>
     </div>
   </div>
 </template>
